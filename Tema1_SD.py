@@ -16,18 +16,18 @@ def BubbleSort(X):
 
 
 def CountSort(X):
-    maxim = max(X)
-    if max(X) > 1e7:
+    MAX = max(X)
+    if max(X) > 9999999:
         print("Not enough memory!")
         return []
     else:
         List = []
         final = []
-        for i in range(maxim + 1):
+        for i in range(MAX + 1):
             List.append(0)
         for nr in X:
             List[nr] += 1
-        for i in range(maxim + 1):
+        for i in range(MAX + 1):
             for j in range(List[i]):
                 final.append(i)
         return final
@@ -74,7 +74,7 @@ def Median_pivot(X):
 
 
 
-def QuickSort(X, inf, sup, f_pivot=Median_pivot):
+def QuickSort(X, inf, sup, f_pivot):
     i = inf
     j = sup
     pivot = f_pivot(X[inf:sup])
@@ -84,9 +84,7 @@ def QuickSort(X, inf, sup, f_pivot=Median_pivot):
         while X[j] > pivot and j >= inf:
             j -= 1
         if i <= j:
-            aux = X[i]
-            X[i] = X[j]
-            X[j] = aux
+            X[i],X[j]=X[j],X[i]
             i += 1
             j -= 1
     if i < sup:
@@ -143,7 +141,7 @@ with open("teste.in") as tests:
                     min_time = [time, sort.__name__]
             else:
                 if (time > time_limit):
-                    print(f"{sort.__name__} - Status: Error!: OUT OF TIME")
+                    print(f"{sort.__name__} - Status: Error!: Time limit exceeded")
                 else:
                     print(f"{sort.__name__} - Status: Error!: Array not sorted")
 
