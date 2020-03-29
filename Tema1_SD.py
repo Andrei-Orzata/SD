@@ -2,6 +2,7 @@ from timeit import default_timer as timer
 from random import randint, choice
 from math import log, floor
 
+
 def BubbleSort(X):
     global start, time_limit
     for i in range(len(X)):
@@ -14,10 +15,9 @@ def BubbleSort(X):
     return X
 
 
-
 def CountSort(X):
     MAX = max(X)
-    if max(X) > 9999999:
+    if max(X) > 999999:
         print("Not enough memory!")
         return []
     else:
@@ -31,16 +31,15 @@ def CountSort(X):
             for j in range(List[i]):
                 final.append(i)
         return final
-    
-    
-    
+
+
 def Interclasare(st, dr):
     i = j = 0
     final = []
     while i < len(st) and j < len(dr):
         if st[i] < dr[j]:
             final.append(st[i])
-            i += 1
+            i = i + 1
         else:
             final.append(dr[j])
             j += 1
@@ -55,8 +54,10 @@ def MergeSort(X):
     else:
         return Interclasare(MergeSort(X[len(X) // 2:]), MergeSort(X[:len(X) // 2]))
 
+
 def first(X):
     return X[0]
+
 
 def middle(X):
     return X[len(X) // 2]
@@ -64,40 +65,37 @@ def middle(X):
 
 def Median_pivot(X):
     if len(X) <= 5:
-        try:
-            return sorted(X)[len(X) // 2]
-        except IndexError:
-            return 0
+        return sorted(X)[len(X) // 2]
     sublists = [sorted(X[i:i + 5]) for i in range(0, len(X), 5)]
     median = [sl[len(sl) // 2] for sl in sublists]
     return Median_pivot(median)
 
 
-
-def QuickSort(X, inf, sup, f_pivot):
-    i = inf
-    j = sup
-    pivot = f_pivot(X[inf:sup])
+def QuickSort(X, start, end, f_pivot=Median_pivot):
+    i = start
+    j = end
+    pivot = f_pivot(X[start:end])
     while i <= j:
-        while i < sup and X[i] < pivot:
-            i += 1
-        while X[j] > pivot and j >= inf:
-            j -= 1
+        while i < end and X[i] < pivot:
+            i = i + 1
+        while X[j] > pivot and j >= start:
+            j = j - 1
         if i <= j:
-            X[i],X[j]=X[j],X[i]
-            i += 1
-            j -= 1
-    if i < sup:
-        QuickSort(X, i, sup)
-    if j > inf:
-        QuickSort(X, inf, j)
+            X[i], X[j] = X[j], X[i]
+            i = i + 1
+            j = j - 1
+    if i < end:
+        QuickSort(X, i, end)
+    if j > start:
+        QuickSort(X, start, j)
     return X
+
 
 def RadixSort(X):
     base = 10
     placement = 1
-    Nr_cifre = floor(log(max(X), base)) + 1
-    for i in range(Nr_cifre):
+    lenght = floor(log(max(X), base)) + 1
+    for i in range(lenght):
         buckets = [[] for ind in range(base)]
         for i in X:
             tmp = i // placement
@@ -110,11 +108,13 @@ def RadixSort(X):
         placement *= base
     return X
 
+
 def isSorted(X):
     for i in range(len(X) - 1):
         if X[i + 1] < X[i]:
             return False
     return True
+
 
 with open("teste.in") as tests:
     Nr_test = 0
@@ -136,15 +136,14 @@ with open("teste.in") as tests:
             end = timer()
             time = round((end - start) * 1000, 4)
             if (isSorted(List_Aux)):
-                print(f"{sort.__name__} - Status: Good - Time: {time} ms")
+                print(f"{sort.__name__} || Time: {time} ms")
                 if time < min_time[0]:
                     min_time = [time, sort.__name__]
             else:
                 if (time > time_limit):
-                    print(f"{sort.__name__} - Status: Error!: Time limit exceeded")
+                    print(f"{sort.__name__} - Error!: Time limit exceeded")
                 else:
-                    print(f"{sort.__name__} - Status: Error!: Array not sorted")
-
+                    print(f"{sort.__name__} - Error!: Array not sorted")
 
         List_Aux = [x for x in List]
         start = timer()
@@ -154,10 +153,9 @@ with open("teste.in") as tests:
         if time < min_time[0]:
             min_time = [time, "QuickSort|Case:First Element"]
         if (isSorted(List_Aux)):
-            print(f"QuickSort|Case:First Element - Status: Good || Time: {time} ms")
+            print(f"QuickSort|Case:First Element || Time: {time} ms")
         else:
-            print(f"QuickSort|Case:First Element - Status: FAILED")
-
+            print(f"QuickSort|Case:First Element |ERROR")
 
         List_Aux = [x for x in List]
         start = timer()
@@ -167,10 +165,9 @@ with open("teste.in") as tests:
         if time < min_time[0]:
             min_time = [time, "QuickSort|Case:Middle element"]
         if (isSorted(List_Aux)):
-            print(f"QuickSort|Case:Middle element - Status: Good || Time: {time} ms")
+            print(f"QuickSort|Case:Middle element || Time: {time} ms")
         else:
-            print(f"QuickSort|Case:Middle element - Status: FAILED")
-
+            print(f"QuickSort|Case:Middle element |ERROR")
 
         List_Aux = [x for x in List]
         start = timer()
@@ -180,10 +177,9 @@ with open("teste.in") as tests:
         if time < min_time[0]:
             min_time = [time, "QuickSort|Case:Random element"]
         if (isSorted(List_Aux)):
-            print(f"QuickSort|Case:Random element - Status: Good || Time: {time} ms")
+            print(f"QuickSort|Case:Random element || Time: {time} ms")
         else:
-            print(f"QuickSort|Case:Random element - Status: FAILED")
-
+            print(f"QuickSort|Case:Random element |ERROR")
 
         List_Aux = [x for x in List]
         start = timer()
@@ -191,12 +187,11 @@ with open("teste.in") as tests:
         end = timer()
         time = round((end - start) * 1000, 4)
         if time < min_time[0]:
-            min_time = [time, "QuickSort|Best Case: Median of Medians"]
+            min_time = [time, "QuickSort| Best Case: Median of Medians"]
         if (isSorted(List_Aux)):
-            print(f"QuickSort|Best Case: Median of Medians - Status: Good || Time: {time} ms")
+            print(f"QuickSort|Best Case: Median of Medians || Time: {time} ms")
         else:
-            print(f"QuickSort|Best Case: Median of Medians - Status: FAILED")
-
+            print(f"QuickSort|Best Case: Median of Medians |ERROR")
 
         start = timer()
         List_Aux = sorted(List)
@@ -204,6 +199,7 @@ with open("teste.in") as tests:
         time_sorted = round((end - start) * 1000, 4)
         print(f"Local Sort  - Time: {time_sorted} ms")
 
-        print(f"|Minimum time: {min_time[1]}: {min_time[0]} ms || Local Sort Minimum time :{time_sorted}|\n|Difference: {round(min_time[0] - time_sorted, 4)} ms || {round(min_time[0] / time_sorted,2)} times faster|")
+        print(
+            f"|Minimum time: {min_time[1]}: {min_time[0]} ms || Local Sort Minimum time :{time_sorted}|\n|Difference: {round(min_time[0] - time_sorted, 4)} ms || {round(min_time[0] / time_sorted, 2)} times faster|")
 
         print()
